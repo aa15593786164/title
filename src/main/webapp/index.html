@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Maven First Demo</title>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <table class="table table-hover">
+            <tr>
+                <td><span class="label label-info">用户名</span></td>
+                <td><input type="text" class="form-control" id="username" placeholder="username"></td>
+            </tr>
+            <tr>
+                <td><span class="label label-info">密码</span></td>
+                <td><input type="password" class="form-control" id="password" placeholder="password"></td>
+            </tr>
+        </table>
+    </div>
+    <div class="row">
+        <button class="btn btn-primary col-xs-offset-2 col-xs-4" id="loginBtn">登录</button>
+        <button class="btn btn-default col-xs-offset-2 col-xs-4" id="regBtn">注册</button>
+    </div>
+    <div class="well" id="loginResult"></div>
+</div>
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+    $(function(){
+        $("#loginBtn").click(function(){
+           $.ajax({
+               url:"http://localhost:8080/UserLoginServlet",
+               type:"post",
+               data:{
+                   "username":$("#username").val(),
+                   "password":$("#password").val()
+               },
+
+               success:function(response){
+                   var jsonRes = JSON.parse(response);
+                   if(jsonRes.code == 200){
+                       $("#loginResult").text("登录成功：欢迎"+jsonRes.data.username);
+                   }else if(jsonRes.code == 404){
+                       $("#loginResult").text("登录失败！");
+                   }
+               }
+           });
+        });
+        $("#regBtn").click(function(){
+           window.location.href = "http://localhost:8080/reg.html"
+        });
+    });
+
+</script>
+</body>
+</html>
